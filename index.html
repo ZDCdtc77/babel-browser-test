@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+
+    <!--方式1 引用js文件-->
+    <script type="text/babel" src="index.js"></script>
+</head>
+
+<!--让IE8见鬼去吧-->
+<!--[if lt IE 9]>
+<body style="background-color:#F5F5F5">
+<p style="position: absolute; top: 50%; width:100%;height: 50%; margin: 0; text-align: center; font-size: 24px;">
+    您正在使用的浏览器版本太低了，请升级您的浏览器后重试<br>
+    You are using an outdated browser. Please upgrade your browser and try again.
+</p>
+</body>
+<![endif]-->
+<!--[if (!IE)|(gte IE 9)]><!-->
+<body>
+    <p id="ap">呵呵呵呵 倔强</p>
+<!--方式2 页面Js-->
+<script type="text/babel">
+    console.log([1, 2, 3].map((x) => x * 2))
+    console.log(document.querySelector("[id='ap']").innerHTML)
+</script>
+</body>
+<![endif]-->
+</html>
