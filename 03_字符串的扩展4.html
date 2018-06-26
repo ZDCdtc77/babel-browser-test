@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+模板字符串（template string）是增强版的字符串，用反引号（\`）标识。
+它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。
+
+大括号内部可以放入任意的 JavaScript 表达式，可以进行运算，以及引用对象属性。
+`)
+        // 字符串中嵌入变量
+        let name = "Bob", time = "today";
+        console.log(`Hello ${name}, how are you ${time}?`)
+
+        let x = 1;
+        let y = 2;
+
+        console.log(`${x} + ${y} = ${x + y}`)
+// "1 + 2 = 3"
+
+        console.log(`${x} + ${y * 2} = ${x + y * 2}`)
+        // "1 + 4 = 5"
+
+        let obj = {x: 1, y: 2};
+        console.log(`${obj.x + obj.y}`)
+
+        console.log(`
+模板字符串甚至还能嵌套。
+`)
+        const tmpl = addrs => `
+  <table>
+  ${addrs.map(addr => `
+    <tr><td>${addr.first}</td></tr>
+    <tr><td>${addr.last}</td></tr>
+  `).join('')}
+  </table>
+`;
+
+        const data = [
+            { first: '<Jane>', last: 'Bond' },
+            { first: 'Lars', last: '<Croft>' },
+        ];
+
+        console.log(tmpl(data));
+
+        console.log(`
+“标签模板”的一个重要应用，就是过滤 HTML 字符串，防止用户输入恶意内容。
+
+标签模板的另一个应用，就是多语言转换（国际化处理）。
+i18n\`Welcome to \${siteName}, you are visitor number \${visitorNumber}!\`
+// "欢迎访问xxx，您是第xxxx位访问者！"
+
+模板字符串本身并不能取代 Mustache 之类的模板库，
+因为没有条件判断和循环处理功能，
+但是通过标签函数，你可以自己添加这些功能。
+
+除此之外，你甚至可以使用标签模板，在 JavaScript 语言之中嵌入其他语言。
+`)
+        let total = 30;
+        let msg = passthru`The total is ${total} (${total*1.05} with tax)`;
+        function passthru(literals, ...values) {
+            let output = "";
+            let index;
+            for (index = 0; index < values.length; index++) {
+                output += literals[index] + values[index];
+            }
+
+            output += literals[index]
+            return output;
+        }
+        console.log(msg)
+
+
+        let sender=`<zyl>`
+        let message =
+            SaferHTML`<p>${sender} has sent you a message.</p>`;
+
+        function SaferHTML(templateData) {
+            let s = templateData[0];
+            for (let i = 1; i < arguments.length; i++) {
+                let arg = String(arguments[i]);
+
+                // Escape special characters in the substitution.
+                s += arg.replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;");
+
+                // Don't escape special characters in the template.
+                s += templateData[i];
+            }
+            return s;
+        }
+
+        console.log(message)
+
+        console.log(`
+console.log接受的参数，实际上是一个数组。
+该数组有一个raw属性，保存的是转义后的原字符串。
+
+tag函数的第一个参数strings，有一个raw属性，
+也指向一个数组。该数组的成员与strings数组完全一致。
+比如，strings数组是["First line\nSecond line"]，
+那么strings.raw数组就是["First line\\nSecond line"]。
+两者唯一的区别，就是字符串里面的斜杠都被转义了。
+比如，strings.raw 数组会将\n视为\\和n两个字符，而不是换行符。
+这是为了方便取得转义之前的原始模板而设计的。
+`)
+        tag`First line\nSecond line`
+
+        function tag(strings) {
+            console.log(strings.raw[0]);
+            // strings.raw[0] 为 "First line\\nSecond line"
+            // 打印输出 "First line\nSecond line"
+        }
+    </script>
+</body>
+</html>

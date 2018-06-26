@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+解构不仅可以用于数组，还可以用于对象。
+对象的解构赋值是下面形式的简写（参见《对象的扩展》一章）。
+let { foo: foo, bar: bar } = { foo: "aaa", bar: "bbb" };
+`)
+        let { foo, bar } = { foo: "aaa", bar: "bbb" };
+        console.log(foo) // "aaa"
+        console.log(bar) // "bbb"
+
+        console.log(`
+对象的解构赋值，可以很方便地将现有对象的方法，赋值到某个变量。
+`)
+        let {log,sin,cos} = Math;
+        console.log(log)
+    </script>
+
+</body>
+</html>

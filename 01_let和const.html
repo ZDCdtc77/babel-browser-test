@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+变量i是let声明的，
+当前的i只在本轮循环有效，
+所以每一次循环的i其实都是一个新的变量，
+所以最后输出的是6
+var a = [];
+for (let i = 0; i < 10; i++) {
+    a[i] = function () {
+        console.log(i);
+    };
+}
+a[6]();`)
+        var a = [];
+        for (let i = 0; i < 10; i++) {
+            a[i] = function () {
+                console.log(i);
+            };
+        }
+        a[6](); // 6
+
+
+        console.log(`
+另外，for循环还有一个特别之处，
+就是设置循环变量的那部分是一个父作用域，
+而循环体内部是一个单独的子作用域。
+注意：下面的例子如果是同一个作用域,那么第二个let i会报错
+for (let i = 0; i < 3; i++) {
+  let i = 'abc';
+  console.log(i);
+}`)
+        for (let i = 0; i < 3; i++) {
+            let i = 'abc';
+            console.log(i);
+        }
+
+        console.log(`
+“暂时性死区”也意味着typeof不再是一个百分之百安全的操作。
+注意：但在这个babel浏览器环境中，不会报错,typeof的表现跟var一样，如果要看正确的表现，把最后面注释的script去掉注释，然后在chrome环境运行
+}`)
+        console.log(typeof x); // ReferenceError
+        let x;
+
+
+        console.log(`
+如果真的想将对象冻结，
+应该使用Object.freeze方法。
+// 常规模式时，下面一行不起作用；
+// 严格模式时，该行会报错
+注意:babel浏览器环境IE表现为常规模式，chrome表现为严格模式，意味这个方法没个鸟用
+`)
+        const foo = Object.freeze({});
+        foo.prop = 123;
+    </script>
+<!--    <script type="text/javascript">
+        typeof y; // ReferenceError
+        let y;
+    </script>-->
+</body>
+</html>

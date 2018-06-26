@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+ES6 提供了二进制和八进制数值的新的写法，
+分别用前缀0b（或0B）和0o（或0O）表示。
+`)
+        console.log(0b111110111 === 503)
+        console.log(0o767 === 503)
+    </script>
+</body>
+</html>

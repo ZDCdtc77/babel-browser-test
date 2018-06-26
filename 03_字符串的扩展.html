@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+JavaScript 允许采用\\uxxxx形式表示一个字符，
+其中xxxx表示字符的 Unicode 码点。
+但是，这种表示法只限于码点在\\u0000~\\uFFFF之间的字符。
+超出这个范围的字符，必须用两个双字节的形式表示。
+`)
+        console.log("\uD842\uDFB7")// "𠮷"
+
+
+        console.log(`
+ES6 提供了codePointAt方法，能够正确处理 4 个字节储存的字符，
+返回一个字符的码点。
+`)
+        let s = '𠮷a';
+
+        console.log(s.codePointAt(0)) // 134071
+        console.log(s.codePointAt(1)) // 57271
+
+        console.log(s.codePointAt(2)) // 97
+
+
+        console.log(`
+你可能注意到了，codePointAt方法的参数，仍然是不正确的。
+比如，上面代码中，字符a在字符串s的正确位置序号应该是 1，
+但是必须向codePointAt方法传入 2。
+解决这个问题的一个办法是使用for...of循环，
+因为它会正确识别 32 位的 UTF-16 字符。
+注意：这意味着for of能正确循环字符串
+`)
+        for (let ch of s) {
+            console.log(ch.codePointAt(0).toString(16));
+        }
+
+        console.log(`
+ES6 提供了String.fromCodePoint方法，可以识别大于0xFFFF的字符，
+弥补了String.fromCharCode方法的不足。
+在作用上，正好与codePointAt方法相反。
+`)
+        console.log(String.fromCodePoint(0x20BB7))
+    </script>
+</body>
+</html>

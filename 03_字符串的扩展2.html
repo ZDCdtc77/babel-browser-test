@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+ES6 为字符串添加了遍历器接口（详见《Iterator》一章），
+使得字符串可以被for...of循环遍历。
+除了遍历字符串，这个遍历器最大的优点是可以识别大于0xFFFF的码点，
+传统的for循环无法识别这样的码点。
+`)
+        for (let codePoint of 'foo') {
+            console.log(codePoint)
+        }
+
+        let text = String.fromCodePoint(0x20BB7);
+
+        for (let i = 0; i < text.length; i++) {
+            console.log(text[i]);
+        }
+        // " "
+        // " "
+
+        for (let i of text) {
+            console.log(i);
+        }
+        // "𠮷"
+
+        console.log(`
+charAt方法期望返回的是用2个字节表示的字符，
+但汉字“𠮷”占用了4个字节，
+charAt(0)表示获取这4个字节中的前2个字节，
+很显然，这是无法正常显示的。
+目前，有一个提案，提出字符串实例的at方法，
+可以识别 Unicode 编号大于0xFFFF的字符，返回正确的字符。
+这个方法可以通过垫片库实现。
+`)
+        console.log('abc'.at(0)) // "a"
+        console.log('𠮷'.at(0)) // "𠮷"
+
+
+        console.log(`
+ES6 提供字符串实例的normalize()方法，
+用来将字符的不同表示方法统一为同样的形式，
+这称为 Unicode 正规化。
+注意：Babel浏览器环境IE不能运行
+`)
+        console.log('\u01D1'.normalize() === '\u004F\u030C'.normalize())
+    </script>
+</body>
+</html>

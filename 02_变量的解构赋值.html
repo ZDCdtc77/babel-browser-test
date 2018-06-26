@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+可以从数组中提取值，按照对应位置，对变量赋值
+let [a, b, c] = [1, 2, 3];
+`)
+        let [a, b, c] = [1, 2, 3];
+        console.log(a);
+        console.log(b);
+        console.log(c);
+
+        console.log(`
+本质上，这种写法属于“模式匹配”，
+只要等号两边的模式相同，
+左边的变量就会被赋予对应的值。
+如果解构不成功，变量的值就等于undefined。数组的值是[]
+下面是一些使用嵌套数组进行解构的例子。
+`)
+        let [,,thirth]=["foo","bar","baz"];
+        console.log(thirth)
+
+        let [x,,y]=[1,2,3]
+        console.log(x)
+        console.log(y)
+
+        let [head, ...tail] = [1, 2, 3, 4];
+        console.log(head) // 1
+        console.log(tail) // [2, 3, 4]
+
+        let [x1, y1, ...z] = ['a'];
+        console.log(x1) // "a"
+        console.log(y1) // undefined
+        console.log(z) // []
+
+        console.log(`
+事实上，只要某种数据结构具有 Iterator 接口，
+都可以采用数组形式的解构赋值。
+fibs是一个 Generator 函数
+原生具有 Iterator 接口。
+解构赋值会依次从这个接口获取值。
+注意：这个代码经过BABEL翻译，竟然能在ie中运行
+`)
+        function* fibs() {
+            let a = 0;
+            let b = 1;
+            while (true) {
+                yield a;
+                [a, b] = [b, a + b];
+            }
+        }
+
+        let [first, second, third, fourth, fifth, sixth] = fibs();
+        console.log(first) // 0
+        console.log(sixth) // 5
+
+        console.log(`
+解构赋值允许指定默认值。
+ES6 内部使用严格相等运算符（===），判断一个位置是否有值。
+所以，只有当一个数组成员严格等于undefined，默认值才会生效。
+`)
+        let [foo = true] = [];
+        console.log(foo) // true
+
+        let [x, y = 'b'] = ['a']; // x='a', y='b'
+        console.log(x)
+        console.log(y)
+
+        let [xx = 1, yy = xx] = [1, 2]; // xx=1; yy=2
+        console.log(xx)
+        console.log(yy)
+    </script>
+
+</body>
+</html>

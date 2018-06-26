@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+交换变量的值
+`)
+        let x = 1;
+        let y = 2;
+
+        [x, y] = [y, x];
+        console.log(x)
+        console.log(y)
+
+        console.log(`
+从函数返回多个值
+`)
+        // 返回一个数组
+
+        function example() {
+            return [1, 2, 3];
+        }
+        let [a, b, c] = example();
+        console.log(a)
+        console.log(b)
+        console.log(c)
+
+        // 返回一个对象
+        function example2() {
+            return {
+                foo: 1,
+                bar: 2
+            };
+        }
+        let { foo, bar } = example2();
+        console.log(foo)
+        console.log(bar)
+
+        console.log(`
+函数参数的定义
+`)
+        // 参数是一组有次序的值
+        function f([x, y, z]) {
+            console.log(x)
+            console.log(y)
+            console.log(z)
+        }
+        f([1, 2, 3]);
+
+        // 参数是一组无次序的值
+        function ff({x, y, z}) {
+            console.log(x)
+            console.log(y)
+            console.log(z)
+        }
+        ff({z: 3, y: 2, x: 1});
+
+        console.log(`
+解构赋值对提取 JSON 对象中的数据，尤其有用。
+`)
+        let jsonData = {
+            id: 42,
+            status: "OK",
+            data: [867, 5309]
+        };
+
+        let { id, status, data: number } = jsonData;
+
+        console.log(id, status, number);
+
+        console.log(`
+任何部署了 Iterator 接口的对象，
+都可以用for...of循环遍历。
+Map 结构原生支持 Iterator 接口，
+配合变量的解构赋值，获取键名和键值就非常方便。
+`)
+        const map = new Map();
+        map.set('first', 'hello');
+        map.set('second', 'world');
+
+        for (let [key, value] of map) {
+            console.log(key + " is " + value);
+        }
+    </script>
+
+</body>
+</html>
