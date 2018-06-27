@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+Math.trunc方法用于去除一个数的小数部分，返回整数部分。
+对于非数值，Math.trunc内部使用Number方法将其先转为数值。
+对于空值和无法截取整数的值，返回NaN。
+`)
+        console.log(Math.trunc(4.1))
+        console.log(Math.trunc(4.9))
+
+
+        console.log(`
+Math.sign方法用来判断一个数到底是正数、负数、还是零。
+对于非数值，会先将其转换为数值。
+它会返回五种值。
+
+参数为正数，返回+1；
+参数为负数，返回-1；
+参数为 0，返回0；
+参数为-0，返回-0;
+其他值，返回NaN。
+
+注意IE没有返回-0
+`)
+        console.log(Math.sign(-5))
+        console.log(Math.sign(5))
+        console.log(Math.sign(5))
+        console.log(Math.sign(0))
+        console.log(Math.sign(-0))
+        console.log(Math.sign(NaN))
+
+        console.log(`
+ES2016 新增了一个指数运算符（**）。
+
+注意IE语法错误
+`)
+        console.log(2**2)
+        console.log(2**3)
+    </script>
+</body>
+</html>

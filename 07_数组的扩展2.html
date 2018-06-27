@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script type="text/babel">
+        console.log(`
+扩展运算符内部调用的是数据结构的 Iterator 接口，
+因此只要具有 Iterator 接口的对象，
+都可以使用扩展运算符，比如 Map 结构。
+`)
+        let map=new Map([
+            [1,'one'],
+            [2,'two'],
+            [3,'three']
+        ])
+        map.set(4,'four');
+
+        console.log([...map.keys()])
+
+        console.log(`
+Array.from方法用于将两类对象转为真正的数组：
+类似数组的对象（array-like object）
+和可遍历（iterable）的对象（包括 ES6 新增的数据结构 Set 和 Map）。
+
+实际应用中，常见的类似数组的对象是 DOM 操作返回的 NodeList 集合，
+以及函数内部的arguments对象。
+Array.from都可以将它们转为真正的数组。
+`)
+        let arrayLike = {
+            '0': 'a',
+            '1': 'b',
+            '2': 'c',
+            length: 3
+        };
+
+        console.log(Array.from(arrayLike))
+
+
+        console.log(`
+Array.of方法用于将一组值，转换为数组。
+
+rray.of基本上可以用来替代Array()或new Array()，
+并且不存在由于参数不同而导致的重载。它的行为非常统一。
+`)
+        console.log(Array.of(3, 11, 8)) // [3,11,8]
+        console.log(Array.of(3)) // [3]
+        console.log(Array(3)) // [,,]
+    </script>
+
+</body>
+</html>

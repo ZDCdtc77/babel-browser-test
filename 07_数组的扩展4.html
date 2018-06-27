@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script type="text/babel">
+        console.log(`
+ES6 提供三个新的方法——entries()，keys()和values()——
+用于遍历数组。它们都返回一个遍历器对象（详见《Iterator》一章），
+可以用for...of循环进行遍历，
+唯一的区别是keys()是对键名的遍历、
+values()是对键值的遍历，
+entries()是对键值对的遍历。
+
+如果不使用for...of循环，可以手动调用遍历器对象的next方法，进行遍历。
+`)
+        for (let index of ['a', 'b'].keys()) {
+            console.log(index);
+        }
+        // 0
+        // 1
+
+        for (let elem of ['a', 'b'].values()) {
+            console.log(elem);
+        }
+        // 'a'
+        // 'b'
+
+        for (let [index, elem] of ['a', 'b'].entries()) {
+            console.log(index, elem);
+        }
+
+        let letter = ['a', 'b', 'c'];
+        let entries = letter.entries();
+        console.log(entries.next().value); // [0, 'a']
+        console.log(entries.next().value); // [1, 'b']
+        console.log(entries.next().value); // [2, 'c']
+
+
+        console.log(`
+Array.prototype.includes方法返回一个布尔值，表示某个数组是否包含给定的值，
+与字符串的includes方法类似。
+
+indexOf方法有两个缺点，
+一是不够语义化，它的含义是找到参数值的第一个出现位置，
+所以要去比较是否不等于-1，表达起来不够直观。
+二是，它内部使用严格相等运算符（===）进行判断，这会导致对NaN的误判。
+
+另外，Map 和 Set 数据结构有一个has方法，需要注意与includes区分。
+
+Map 结构的has方法，是用来查找键名的，比如Map.prototype.has(key)、WeakMap.prototype.has(key)、Reflect.has(target, propertyKey)。
+Set 结构的has方法，是用来查找值的，比如Set.prototype.has(value)、WeakSet.prototype.has(value)。
+
+`)
+        console.log([1, 2, NaN].includes(NaN))
+        console.log([NaN].indexOf(NaN))
+
+
+        console.log(`
+数组的空位指，数组的某一个位置没有任何值。比如，Array构造函数返回的数组都是空位
+Array(3) // [, , ,]
+
+空位不是undefined，一个位置的值等于undefined，依然是有值的。空位是没有任何值，in运算符可以说明这一点。
+
+ES5 对空位的处理，已经很不一致了，大多数情况下会忽略空位。
+ES6 则是明确将空位转为undefined。
+`)
+        console.log(0 in [undefined,undefined,undefined])
+        console.log(0 in [,,])
+
+        console.log(Array.from(['a',,'b']))
+    </script>
+
+</body>
+</html>

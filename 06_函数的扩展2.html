@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <script type="text/babel">
+        console.log(`
+利用参数默认值，可以指定某一个参数不得省略，如果省略就抛出一个错误。
+`)
+        function throwIfMissing() {
+            throw new Error('Missing parameter');
+        }
+
+        function foo(mustBeProvided = throwIfMissing()) {
+            return mustBeProvided;
+        }
+
+        foo()
+    </script>
+</body>
+</html>
