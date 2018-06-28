@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script type="text/babel">
+        console.log(`
+对象的每个属性都有一个描述对象（Descriptor），用来控制该属性的行为。
+Object.getOwnPropertyDescriptor方法可以获取该属性的描述对象。
+
+有四个操作会忽略enumerable为false的属性。
+
+for...in循环：只遍历对象自身的和继承的可枚举的属性。
+Object.keys()：返回对象自身的所有可枚举的属性的键名。
+JSON.stringify()：只串行化对象自身的可枚举的属性。
+Object.assign()： 忽略enumerable为false的属性，只拷贝对象自身的可枚举的属性。
+
+
+`)
+        let obj = { foo: 123 };
+        console.log(Object.getOwnPropertyDescriptor(obj, 'foo'))
+
+
+        console.log(`
+ES6 规定，所有 Class 的原型的方法都是不可枚举的。
+`)
+        console.log(Object.getOwnPropertyDescriptor(class {foo(){}}.prototype,'foo').enumerable)
+
+        console.log(`
+Object.setPrototypeOf方法的作用与__proto__相同，
+用来设置一个对象的prototype对象，
+返回参数对象本身。
+它是 ES6 正式推荐的设置原型对象的方法。
+
+注意IE9不支持Object.setPrototypeOf
+
+
+该方法与Object.setPrototypeOf方法配套，用于读取一个对象的原型对象。
+`)
+        let proto = {};
+        let obj2 = { x: 10 };
+        Object.setPrototypeOf(obj2, proto);
+
+        proto.y = 20;
+        proto.z = 40;
+
+        console.log(obj2.x) // 10
+        console.log(obj2.y) // 20
+        console.log(obj2.z) // 40
+    </script>
+
+</body>
+</html>

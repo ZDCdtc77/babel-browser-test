@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script type="text/babel">
+        console.log(`
+ES6 允许直接写入变量和函数，作为对象的属性和方法。
+`)
+        function getPoint() {
+            const x = 1;
+            const y = 10;
+            return {x, y};
+        }
+
+        console.log(getPoint())
+
+        console.log(`
+ES6 允许字面量定义对象时，
+用表达式作为对象的属性名，即把表达式放在方括号内。
+
+// es5可以这样
+obj['a' + 'bc'] = 123;
+`)
+        let propKey = 'foo';
+
+        let obj = {
+            [propKey]: true,
+            ['a' + 'bc']: 123
+        };
+
+        console.log(obj)
+
+        console.log(`
+ Object.is比较两个值是否相等
+ 与严格比较运算符（===）的行为基本一致。
+ 不同之处只有两个：一是+0不等于-0，二是NaN等于自身。
+`)
+        console.log(Object.is(+0,-0))
+        console.log(Object.is(NaN,NaN))
+
+
+        console.log(`
+Object.assign方法用于对象的合并，
+将源对象（source）的所有可枚举属性，复制到目标对象（target）。
+
+Object.assign(SomeClass.prototype, {
+  someMethod(arg1, arg2) {
+    ···
+  },
+  anotherMethod() {
+    ···
+  }
+});
+
+克隆对象
+
+function clone(origin) {
+  return Object.assign({}, origin);
+}
+上面代码将原始对象拷贝到一个空对象，就得到了原始对象的克隆。
+
+不过，采用这种方法克隆，只能克隆原始对象自身的值，不能克隆它继承的值。如果想要保持继承链，可以采用下面的代码。
+
+function clone(origin) {
+  let originProto = Object.getPrototypeOf(origin);
+  return Object.assign(Object.create(originProto), origin);
+}
+`)
+        const target={a:1}
+        const source={b:2}
+        const source2={c:3}
+        console.log(Object.assign(target,source,source2))
+
+        console.log(`
+为属性指定默认值
+`)
+        const DEFAULTS = {
+            logLevel: 0,
+            outputFormat: 'html'
+        };
+
+        function processContent(options) {
+            options = Object.assign({}, DEFAULTS, options);
+            console.log(options);
+        }
+
+        processContent({logLevel:1})
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script type="text/babel">
+        console.log(`
+this关键字总是指向函数所在的当前对象，
+ES6 又新增了另一个类似的关键字super，指向当前对象的原型对象
+注意是原型对象
+`)
+        class parent {
+            constructor(){
+
+            }
+        }
+        parent.prototype.foo='hello'
+
+        class child extends parent{
+            constructor(){
+                super()
+                this.foo='world';
+            }
+            find(){
+                return super.foo;
+            }
+        }
+        console.log((new child()).find())
+    </script>
+<!--    <script>
+        class parent {
+            constructor(){
+            }
+        }
+        parent.prototype.foo='hello'
+        class child extends parent{
+            constructor(){
+                super()
+                this.foo='world';
+            }
+            find(){
+                return super.foo;
+            }
+        }
+        console.log((new child()).find())
+    </script>-->
+</body>
+</html>

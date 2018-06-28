@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script type="text/babel">
+        console.log(`
+then方法返回的是一个新的Promise实例（注意，不是原来那个Promise实例）。
+因此可以采用链式写法，即then方法后面再调用另一个then方法。
+`)
+
+        const getJSON = function(url) {
+            const promise = new Promise(function(resolve, reject){
+                const handler = function() {
+                    if (this.readyState !== 4) {
+                        return;
+                    }
+
+                    if (this.status === 200) {
+                        resolve(this.response||JSON.parse(this.responseText));
+                    } else {
+                        reject(new Error(this.statusText));
+                    }
+                };
+                const client = new XMLHttpRequest();
+                client.open("GET", url);
+                client.onreadystatechange = handler;
+                client.responseType = "json";
+                client.setRequestHeader("Accept", "application/json");
+                client.send();
+
+            });
+
+            return promise;
+        };
+        getJSON("post.json").then(function(post) {
+            return getJSON(post.c);
+        }).then(function funcA(comments) {
+            console.log("resolved: ", comments);
+        }, function funcB(err){
+            console.log("rejected: ", err);
+        });
+
+        console.log(`
+Promise.prototype.catch方法是.then(null, rejection)的别名，
+用于指定发生错误时的回调函数。
+`)
+        getJSON('posFDSAFDASts.json').then(function(posts) {
+            // ...
+        }).catch(function(error) {
+            // 处理 getJSON 和 前一个回调函数运行时发生的错误
+            console.log('发生错误！', error);
+        });
+
+        console.log(`
+Promise 对象的错误具有“冒泡”性质，会一直向后传递，直到被捕获为止。
+也就是说，错误总是会被下一个catch语句捕获。
+`)
+
+        getJSON('/post/1.json').then(function(post) {
+            return getJSON(post.commentURL);
+        }).then(function(comments) {
+            // some code
+        }).catch(function(error) {
+            // 处理前面三个Promise产生的错误
+            console.log('发生错误2222！', error);
+        });
+    </script>
+</body>
+</html>

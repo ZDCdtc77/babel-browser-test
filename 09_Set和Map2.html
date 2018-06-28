@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script type="text/babel">
+        console.log(`
+JavaScript 的对象（Object），本质上是键值对的集合（Hash 结构），但是传统上只能用字符串当作键。这给它的使用带来了很大的限制。
+
+const data = {};
+const element = document.getElementById('myDiv');
+
+data[element] = 'metadata';
+data['[object HTMLDivElement]'] // "metadata"
+上面代码原意是将一个 DOM 节点作为对象data的键，但是由于对象只接受字符串作为键名，所以element被自动转为字符串[object HTMLDivElement]。
+
+
+`)
+
+        const m = new Map();
+        const o = {p: 'Hello World'};
+
+        m.set(o, 'content')
+        console.log(m.get(o)); // "content"
+        [...m.keys()].forEach((k)=>console.log(k))
+
+        console.log(m.has(o))
+        o.p="fuck"
+        console.log(m.has(o))
+
+        const map = new Map([
+            ['name', '张三'],
+            ['title', 'Author']
+        ]);
+    </script>
+</body>
+</html>
