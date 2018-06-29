@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge;chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>我就是TM要用ES6,让IE8见鬼去吧</title>
+    <script src="./dist/babel.min.js"></script>
+    <script src="./dist/polyfill.js"></script>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script type="text/babel">
+        console.log(`
+ ES6 创造了一种新的遍历命令for...of循环，
+ Iterator 接口主要供for...of消费。
+
+原生具备 Iterator 接口的数据结构如下。
+
+Array
+Map
+Set
+String
+TypedArray
+函数的 arguments 对象
+NodeList 对象
+
+对象（Object）没有默认部署 Iterator 接口
+`)
+
+        let arr = ['a', 'b', 'c'];
+        let iter = arr[Symbol.iterator]();
+
+        console.log(iter.next()) // { value: 'a', done: false }
+        console.log(iter.next()) // { value: 'b', done: false }
+        console.log(iter.next()) // { value: 'c', done: false }
+        console.log(iter.next())// { value: undefined, done: true }
+
+
+    </script>
+</body>
+</html>
